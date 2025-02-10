@@ -3,7 +3,6 @@ import genanki
 import numpy as np
 from scipy.io import wavfile
 import os
-from typing import Dict, List, Tuple
 import random
 
 
@@ -18,7 +17,7 @@ class PerfectPitchDeck(AnkiDeck):
         super().__init__(metadata)
         self.note_frequencies = self._generate_frequencies()
 
-    def _generate_frequencies(self) -> Dict[str, float]:
+    def _generate_frequencies(self) -> dict[str, float]:
         """Generate frequencies for all notes."""
         frequencies = {}
         A4_FREQ = 440.0
@@ -114,7 +113,7 @@ class PerfectPitchDeck(AnkiDeck):
             '''
         )
 
-    def generate_cards(self) -> List[genanki.Note]:
+    def generate_cards(self) -> list[genanki.Note]:
         model = self.create_model()
         notes = []
         note_data = []

@@ -9,7 +9,7 @@ anki-decks/
 ├── base.py              # Abstract base class for deck generation
 ├── requirements.txt     # Python package dependencies
 ├── template.md          # LLM-friendly template for new deck scripts
-└── ... various Python scripts that generate Anki decks
+└── scripts/             # Various Python scripts that generate Anki decks
 ```
 
 ## Usage

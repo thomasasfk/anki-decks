@@ -6,6 +6,8 @@ This template provides the base class for generating Anki decks. When given a de
 
 ```python
 from abc import ABC, abstractmethod
+from pathlib import Path
+
 import genanki
 import hashlib
 from dataclasses import dataclass
@@ -111,10 +113,12 @@ For support, bug reports, or feature requests, please visit:
         return deck
 
     def save_deck(self, output_filename: str) -> None:
+        bin_path = Path(__file__).parent / 'bin'
+        bin_path.mkdir(exist_ok=True)
         package = genanki.Package(self.create_deck())
         if self.media_files:
             package.media_files = self.media_files
-        package.write_to_file(output_filename)
+        package.write_to_file(str(bin_path / output_filename))
 ```
 
 ## Implementation Example
