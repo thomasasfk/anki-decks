@@ -1,3 +1,7 @@
+from io import BytesIO
+
+from pydub import AudioSegment
+
 from base import AnkiDeck, DeckMetadata
 import genanki
 import numpy as np
@@ -57,6 +61,17 @@ class PerfectPitchDeck(AnkiDeck):
         envelope[-release_samples:] = np.linspace(sustain_level, 0, release_samples)
 
         return (tone * envelope * self.AMPLITUDE * 32767).astype(np.int16)
+
+    def _save_audio_as_mp3(self, audio_data: np.ndarray, filename: str):
+        """Convert numpy array to MP3 file using pydub."""
+        # First save as WAV in memory
+        wav_io = BytesIO()
+        wavfile.write(wav_io, self.SAMPLE_RATE, audio_data)
+        wav_io.seek(0)
+
+        # Convert to MP3
+        audio_segment = AudioSegment.from_wav(wav_io)
+        audio_segment.export(filename, format="mp3", bitrate="192k")
 
     def create_model(self) -> genanki.Model:
         return genanki.Model(
@@ -125,8 +140,8 @@ class PerfectPitchDeck(AnkiDeck):
 
         for note_name, frequency in note_data:
             audio_data = self._generate_piano_like_tone(frequency)
-            audio_filename = f'note_{note_name.replace("#", "sharp")}.wav'
-            wavfile.write(audio_filename, self.SAMPLE_RATE, audio_data)
+            audio_filename = f'note_{note_name.replace("#", "sharp")}.mp3'
+            self._save_audio_as_mp3(audio_data, audio_filename)
             self.media_files.append(audio_filename)
 
             octave = note_name[-1]

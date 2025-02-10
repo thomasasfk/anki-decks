@@ -155,6 +155,7 @@ if __name__ == "__main__":
     ))
     deck.save_deck("output.apkg")
 ```
+Use mp3s if we're dealing with audio, so they are displayed on the anki website.
 
 Please also clean up any media after we're done saving the deck.
 
